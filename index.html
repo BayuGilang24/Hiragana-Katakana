@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mastering Japanese - Kana Quiz</title>
+
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --accent: #ec4899;
+            --bg-dark: #0f172a;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent; /* Hilangkan highlight biru di HP */
+        }
+
+        body {
+            margin: 0;
+            padding: 15px; /* Memberi jarak di layar HP */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at top left, #1e293b, #0f172a);
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Latar belakang dinamis */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background: var(--primary);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+            top: 5%;
+            left: -10%;
+            opacity: 0.2;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 400px; /* Lebar maksimal di PC */
+            padding: 24px;
+            border-radius: 24px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .brand {
+            text-align: center;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.2;
+            background: linear-gradient(to right, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mode {
+            display: flex;
+            gap: 6px;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 4px;
+            border-radius: 12px;
+        }
+
+        .mode button {
+            flex: 1;
+            padding: 12px 5px; /* Lebih tinggi agar mudah ditekan jari */
+            border: none;
+            border-radius: 9px;
+            cursor: pointer;
+            background: transparent;
+            color: #94a3b8;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .mode button.active {
+            background: white;
+            color: #0f172a;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .question-box {
+            text-align: center;
+        }
+
+        .char-container {
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .question {
+            font-size: clamp(60px, 15vw, 82px); /* Responsif: mengecil di layar kecil */
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); text-shadow: 0 20px 35px rgba(99, 102, 241, 0.5); }
+        }
+
+        .pop-in { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.6); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        input {
+            width: 100%;
+            padding: 18px;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 15px;
+            outline: none;
+            -webkit-appearance: none; /* Hilangkan style default iOS */
+        }
+
+        input:focus { 
+            border-color: var(--primary); 
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2); 
+        }
+
+        .check {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+            touch-action: manipulation; /* Optimasi klik di layar sentuh */
+        }
+
+        .check:active { transform: scale(0.96); }
+
+        .result { 
+            margin-top: 15px; 
+            min-height: 50px; 
+            font-size: 14px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-top: 25px;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        /* Perbaikan untuk HP dengan layar sangat kecil */
+        @media (max-width: 350px) {
+            .app { padding: 18px; }
+            h1 { font-size: 18px; }
+            .question { font-size: 60px; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="app">
+    <div class="brand">Bayu Gilang • Learning Tool</div>
+    <h1>Katakana & Hiragana</h1>
+
+    <div class="mode">
+        <button id="btn-hira" class="active">Hiragana</button>
+        <button id="btn-kata">Katakana</button>
+        <button id="btn-mix">Mix</button>
+    </div>
+
+    <div class="question-box">
+        <div class="char-container">
+            <div class="question" id="question">あ</div>
+        </div>
+        <input id="answer" placeholder="Ketik Romaji..." autocomplete="off" inputmode="text" autofocus>
+        <button class="check" id="btn-check">SUBMIT</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <div class="footer">TARGET 2 MINGGU • JANGAN LEMAH!</div>
+</div>
+
+<script>
+    const hiragana = [
+        {char:'あ',answer:'a'},{char:'い',answer:'i'},{char:'う',answer:'u'},{char:'え',answer:'e'},{char:'お',answer:'o'},
+        {char:'か',answer:'ka'},{char:'き',answer:'ki'},{char:'く',answer:'ku'},{char:'け',answer:'ke'},{char:'こ',answer:'ko'},
+        {char:'さ',answer:'sa'},{char:'し',answer:'shi'},{char:'す',answer:'su'},{char:'せ',answer:'se'},{char:'そ',answer:'so'},
+        {char:'た',answer:'ta'},{char:'ち',answer:'chi'},{char:'つ',answer:'tsu'},{char:'て',answer:'te'},{char:'と',answer:'to'}
+    ];
+
+    const katakana = [
+        {char:'ア',answer:'a'},{char:'イ',answer:'i'},{char:'ウ',answer:'u'},{char:'エ',answer:'e'},{char:'オ',answer:'o'},
+        {char:'カ',answer:'ka'},{char:'キ',answer:'ki'},{char:'ク',answer:'ku'},{char:'ケ',answer:'ke'},{char:'コ',answer:'ko'},
+        {char:'サ',answer:'sa'},{char:'シ',answer:'shi'},{char:'ス',answer:'su'},{char:'se',answer:'se'},{char:'ソ',answer:'so'},
+        {char:'タ',answer:'ta'},{char:'チ',answer:'chi'},{char:'ツ',answer:'tsu'},{char:'テ',answer:'te'},{char:'ト',answer:'to'}
+    ];
+
+    let questions = [...hiragana];
+    let current;
+
+    // AUDIO SYSTEM
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx;
+
+    function playBeep(type) {
+        if (!audioCtx) audioCtx = new AudioContext();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        if (type === 'correct') {
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+        } else {
+            osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+            osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.2);
+        }
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+    }
+
+    function speakJapanese(text) {
+        if(!('speechSynthesis' in window)) return;
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'ja-JP';
+        msg.rate = 0.85;
+        speechSynthesis.cancel();
+        speechSynthesis.speak(msg);
+    }
+
+    const questionEl = document.getElementById('question');
+    const answerEl = document.getElementById('answer');
+    const resultEl = document.getElementById('result');
+    const btnCheck = document.getElementById('btn-check');
+
+    function randomQuestion(){
+        questionEl.classList.remove('pop-in');
+        void questionEl.offsetWidth; 
+        current = questions[Math.floor(Math.random()*questions.length)];
+        questionEl.textContent = current.char;
+        questionEl.classList.add('pop-in');
+    }
+
+    function checkAnswer(){
+        const val = answerEl.value.trim().toLowerCase();
+        if(!val) return;
+
+        speakJapanese(current.char);
+
+        if(val === current.answer){
+            playBeep('correct');
+            resultEl.innerHTML = '<span style="color:#4ade80; font-weight: bold;">Sugoi! 🎉 Benar!</span>';
+        } else {
+            playBeep('wrong');
+            resultEl.innerHTML = `<span style="color:#f87171">Bukan itu...</span><small style="margin-top:5px">Jawaban: <b>${current.answer.toUpperCase()}</b></small>`;
+        }
+
+        answerEl.value = '';
+        setTimeout(() => {
+            resultEl.textContent = '';
+            randomQuestion();
+        }, 1200);
+    }
+
+    // HANDLERS
+    document.getElementById('btn-hira').onclick = (e) => setMode('hiragana', e.target);
+    document.getElementById('btn-kata').onclick = (e) => setMode('katakana', e.target);
+    document.getElementById('btn-mix').onclick = (e) => setMode('mix', e.target);
+    
+    function setMode(mode, btn){
+        document.querySelectorAll('.mode button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        questions = (mode === 'hiragana') ? [...hiragana] : (mode === 'katakana') ? [...katakana] : [...hiragana, ...katakana];
+        resultEl.textContent='';
+        randomQuestion();
+        answerEl.focus();
+    }
+
+    btnCheck.onclick = checkAnswer;
+    answerEl.onkeydown = (e) => { if(e.key === 'Enter') checkAnswer(); };
+
+    // Initial load
+    randomQuestion();
+</script>
+</body>
+</html>
