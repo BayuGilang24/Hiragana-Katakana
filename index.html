@@ -19,12 +19,12 @@
             box-sizing: border-box;
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            -webkit-tap-highlight-color: transparent; /* Hilangkan highlight biru di HP */
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             margin: 0;
-            padding: 15px; /* Memberi jarak di layar HP */
+            padding: 15px;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -34,7 +34,6 @@
             overflow-x: hidden;
         }
 
-        /* Latar belakang dinamis */
         body::before {
             content: "";
             position: absolute;
@@ -51,7 +50,7 @@
 
         .app {
             width: 100%;
-            max-width: 400px; /* Lebar maksimal di PC */
+            max-width: 400px;
             padding: 24px;
             border-radius: 24px;
             background: var(--glass);
@@ -93,7 +92,7 @@
 
         .mode button {
             flex: 1;
-            padding: 12px 5px; /* Lebih tinggi agar mudah ditekan jari */
+            padding: 12px 5px;
             border: none;
             border-radius: 9px;
             cursor: pointer;
@@ -122,7 +121,7 @@
         }
 
         .question {
-            font-size: clamp(60px, 15vw, 82px); /* Responsif: mengecil di layar kecil */
+            font-size: clamp(60px, 15vw, 82px);
             font-weight: 700;
             color: #fff;
             text-shadow: 0 0 20px rgba(255,255,255,0.2);
@@ -151,7 +150,7 @@
             text-align: center;
             margin-bottom: 15px;
             outline: none;
-            -webkit-appearance: none; /* Hilangkan style default iOS */
+            -webkit-appearance: none;
         }
 
         input:focus { 
@@ -171,7 +170,7 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
-            touch-action: manipulation; /* Optimasi klik di layar sentuh */
+            touch-action: manipulation;
         }
 
         .check:active { transform: scale(0.96); }
@@ -197,7 +196,6 @@
             opacity: 0.9;
         }
 
-        /* Perbaikan untuk HP dengan layar sangat kecil */
         @media (max-width: 350px) {
             .app { padding: 18px; }
             h1 { font-size: 18px; }
@@ -230,18 +228,32 @@
 </div>
 
 <script>
+    // DATA HIRAGANA LENGKAP - SUDAH DIPERBAIKI
     const hiragana = [
         {char:'あ',answer:'a'},{char:'い',answer:'i'},{char:'う',answer:'u'},{char:'え',answer:'e'},{char:'お',answer:'o'},
         {char:'か',answer:'ka'},{char:'き',answer:'ki'},{char:'く',answer:'ku'},{char:'け',answer:'ke'},{char:'こ',answer:'ko'},
         {char:'さ',answer:'sa'},{char:'し',answer:'shi'},{char:'す',answer:'su'},{char:'せ',answer:'se'},{char:'そ',answer:'so'},
-        {char:'た',answer:'ta'},{char:'ち',answer:'chi'},{char:'つ',answer:'tsu'},{char:'て',answer:'te'},{char:'と',answer:'to'}
+        {char:'た',answer:'ta'},{char:'ち',answer:'chi'},{char:'つ',answer:'tsu'},{char:'て',answer:'te'},{char:'と',answer:'to'},
+        {char:'な',answer:'na'},{char:'に',answer:'ni'},{char:'ぬ',answer:'nu'},{char:'ね',answer:'ne'},{char:'の',answer:'no'},
+        {char:'は',answer:'ha'},{char:'ひ',answer:'hi'},{char:'ふ',answer:'fu'},{char:'へ',answer:'he'},{char:'ほ',answer:'ho'},
+        {char:'ま',answer:'ma'},{char:'み',answer:'mi'},{char:'む',answer:'mu'},{char:'め',answer:'me'},{char:'も',answer:'mo'},
+        {char:'や',answer:'ya'},{char:'ゆ',answer:'yu'},{char:'よ',answer:'yo'},
+        {char:'ら',answer:'ra'},{char:'り',answer:'ri'},{char:'る',answer:'ru'},{char:'れ',answer:'re'},{char:'ろ',answer:'ro'},
+        {char:'わ',answer:'wa'},{char:'を',answer:'wo'},{char:'ん',answer:'n'}
     ];
 
+    // DATA KATAKANA LENGKAP
     const katakana = [
         {char:'ア',answer:'a'},{char:'イ',answer:'i'},{char:'ウ',answer:'u'},{char:'エ',answer:'e'},{char:'オ',answer:'o'},
         {char:'カ',answer:'ka'},{char:'キ',answer:'ki'},{char:'ク',answer:'ku'},{char:'ケ',answer:'ke'},{char:'コ',answer:'ko'},
-        {char:'サ',answer:'sa'},{char:'シ',answer:'shi'},{char:'ス',answer:'su'},{char:'se',answer:'se'},{char:'ソ',answer:'so'},
-        {char:'タ',answer:'ta'},{char:'チ',answer:'chi'},{char:'ツ',answer:'tsu'},{char:'テ',answer:'te'},{char:'ト',answer:'to'}
+        {char:'サ',answer:'sa'},{char:'シ',answer:'shi'},{char:'ス',answer:'su'},{char:'セ',answer:'se'},{char:'ソ',answer:'so'},
+        {char:'タ',answer:'ta'},{char:'チ',answer:'chi'},{char:'ツ',answer:'tsu'},{char:'テ',answer:'te'},{char:'ト',answer:'to'},
+        {char:'ナ',answer:'na'},{char:'ニ',answer:'ni'},{char:'ヌ',answer:'nu'},{char:'ネ',answer:'ne'},{char:'ノ',answer:'no'},
+        {char:'ハ',answer:'ha'},{char:'ヒ',answer:'hi'},{char:'フ',answer:'fu'},{char:'ヘ',answer:'he'},{char:'ホ',answer:'ho'},
+        {char:'マ',answer:'ma'},{char:'ミ',answer:'mi'},{char:'ム',answer:'mu'},{char:'メ',answer:'me'},{char:'モ',answer:'mo'},
+        {char:'ヤ',answer:'ya'},{char:'ユ',answer:'yu'},{char:'ヨ',answer:'yo'},
+        {char:'ラ',answer:'ra'},{char:'り',answer:'ri'},{char:'ル',answer:'ru'},{char:'レ',answer:'re'},{char:'ロ',answer:'ro'},
+        {char:'ワ',answer:'wa'},{char:'ヲ',answer:'wo'},{char:'ン',answer:'n'}
     ];
 
     let questions = [...hiragana];
